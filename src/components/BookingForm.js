@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import axiosInstance from "../api/axiosInstance";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./Header";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 
 const BookingForm = () => {
@@ -28,7 +28,9 @@ const BookingForm = () => {
     const fetchSeats = async () => {
       setLoadingSeats(true); // Set loading to true when starting to fetch
       try {
-        const response = await axiosInstance.get(`hall/list-seats/?date=${selectedDate}`);
+        const response = await axiosInstance.get(
+          `hall/list-seats/?date=${selectedDate}`
+        );
         setSeats(response.data);
       } catch (error) {
         console.error("Error fetching seats:", error);
@@ -75,7 +77,7 @@ const BookingForm = () => {
       });
       setSeats((prevSeats) =>
         prevSeats.map((seat) =>
-          seat.id === selectedSeat ? { ...seat, is_booked: true } : seat
+          seat.id === selectedSeat ? {...seat, is_booked: true} : seat
         )
       );
       setSelectedSeat(null);
@@ -124,10 +126,12 @@ const BookingForm = () => {
                   <button
                     key={seat.id}
                     className={`h-12 border rounded shadow-sm sm:px-4 py-1 ${
-                      seat.is_booked ? "bg-red-500 cursor-not-allowed" : "bg-green-500"
-                    } text-white ${
-                      selectedSeat === seat.id && "bg-blue-900"
-                    }`}
+                      seat.is_booked
+                        ? "bg-red-500 cursor-not-allowed"
+                        : selectedSeat === seat.id
+                        ? "bg-blue-500"
+                        : "bg-green-600"
+                    } text-white `}
                     onClick={() => !seat.is_booked && handleSeatClick(seat.id)}
                     disabled={seat.is_booked}
                   >
@@ -177,7 +181,11 @@ const BookingForm = () => {
               onClick={handleBook}
               disabled={loadingBooking} // Disable button while booking is in progress
             >
-              {loadingBooking ? <ClipLoader size={20} color="#ffffff" /> : "Book Seat"}
+              {loadingBooking ? (
+                <ClipLoader size={20} color="#ffffff" />
+              ) : (
+                "Book Seat"
+              )}
             </button>
           </div>
         )}
